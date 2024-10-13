@@ -1,1 +1,1 @@
-That is a skilltest for an application. 
+That is a skill test for an application. 

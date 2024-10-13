@@ -1,12 +1,11 @@
 package dev_philipppetersohn.skilltest.user;
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Repository;
-
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -17,7 +16,27 @@ public class UserRepository {
         return users;
     }
 
+    Optional<User> findById(Integer id) {
+        return users.stream()
+                .filter(user -> user.id().equals(id))
+                .findFirst();
+    }
 
+    void create(User user) {
+        users.add(user);
+    }
+
+    void update(User user, Integer id) {
+        Optional<User> existingUser = findById(id);
+        if(existingUser.isPresent()) {
+            users.set(users.indexOf(existingUser.get()), user);
+        }
+    }
+
+    void delete(Integer id) {
+        Optional<User> existingUser = findById(id);
+        existingUser.ifPresent(users::remove);
+    }
 
     @PostConstruct
     private void init() {
